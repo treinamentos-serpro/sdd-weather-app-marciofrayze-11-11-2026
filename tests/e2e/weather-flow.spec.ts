@@ -89,7 +89,7 @@ test('searches, selects a city, displays five days, and switches units by keyboa
   const fahrenheit = page.getByRole('button', { name: 'Fahrenheit' });
   await fahrenheit.focus();
   await fahrenheit.press('Enter');
-  await expect(page.getByText('70°')).toBeVisible();
+  await expect(page.getByRole('region', { name: /Lisboa/ }).getByText('70°')).toBeVisible();
   await expect(page.getByText('75°')).toBeVisible();
   await expect(fahrenheit).toHaveAttribute('aria-pressed', 'true');
   expect(getForecastRequestCount()).toBe(1);
