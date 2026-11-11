@@ -1,28 +1,31 @@
-import type { ForecastDay, Unit } from '../types/weather';
-import { formatTemperature } from '../lib/temperature';
-import { getWeatherIcon, getWeatherLabel } from '../lib/weatherCodes';
-import { getDayLabel, getShortDate } from '../lib/format';
+import type { ForecastDay, TemperatureUnit } from '../types/weather';
+import { formatTemperatureLabel } from '../utils/temperature';
 
 interface ForecastCardProps {
   day: ForecastDay;
-  index: number;
-  unit: Unit;
+  unit: TemperatureUnit;
 }
 
-/** Card de um dia da previsão. */
-export default function ForecastCard({ day, index, unit }: ForecastCardProps) {
+export default function ForecastCard({ day, unit }: ForecastCardProps) {
   return (
-    <li className="flex flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-md">
-      <p className="font-semibold">{getDayLabel(day.date, index)}</p>
-      <p className="text-xs text-white/50">{getShortDate(day.date)}</p>
-      <span aria-hidden="true" className="text-3xl" title={getWeatherLabel(day.weatherCode)}>
-        {getWeatherIcon(day.weatherCode)}
-      </span>
-      <p className="text-sm">
-        <span className="font-semibold">{formatTemperature(day.max, unit)}</span>{' '}
-        <span className="text-white/50">{formatTemperature(day.min, unit)}</span>
-      </p>
-      <p className="text-xs text-accent-400">💧 {day.precipitationProbability}%</p>
-    </li>
+    <article className="rounded-lg border border-white/10 bg-white/[0.045] p-4 shadow-glass backdrop-blur-md transition hover:-translate-y-0.5 hover:border-teal-100/25 hover:bg-white/[0.07] sm:p-5">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <h3 className="text-sm font-semibold text-white">{day.label}</h3>
+          <p className="mt-1 text-xs text-slate-400">{day.date}</p>
+        </div>
+        <span aria-hidden="true" className="text-2xl leading-none sm:text-3xl">
+          {day.icon}
+        </span>
+      </div>
+      <p className="mt-4 min-h-10 text-xs leading-5 text-slate-400">{day.condition}</p>
+      <p className="mt-2 text-xs text-teal-100/80">Chuva {day.precipitationProbability ?? '—'}%</p>
+      <div className="mt-4 flex items-baseline gap-2">
+        <span className="text-lg font-semibold text-white">
+          {formatTemperatureLabel(day.highC, unit)}
+        </span>
+        <span className="text-sm text-slate-400">{formatTemperatureLabel(day.lowC, unit)}</span>
+      </div>
+    </article>
   );
 }
