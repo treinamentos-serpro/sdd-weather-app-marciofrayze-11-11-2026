@@ -84,7 +84,7 @@ test('searches, selects a city, displays five days, and switches units by keyboa
   await expect(page.getByRole('heading', { name: /Lisboa/ })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Previsão de 5 dias' })).toBeVisible();
   await expect(page.getByRole('article')).toHaveCount(5);
-  await expect(page.getByText('21°')).toBeVisible();
+  await expect(page.getByRole('region', { name: /Lisboa/ }).getByText('21°')).toBeVisible();
 
   const fahrenheit = page.getByRole('button', { name: 'Fahrenheit' });
   await fahrenheit.focus();
